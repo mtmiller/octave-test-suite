@@ -32,6 +32,18 @@ run ()
   status=$?
 }
 
+run_with_stdin ()
+{
+  "$@" < "$stdin" > "$stdout" 2> "$stderr"
+  status=$?
+}
+
+write_script_file ()
+{
+  contents=$1
+  echo "$contents" > $script
+}
+
 assertEmptyFile ()
 {
   msg=
@@ -97,6 +109,33 @@ test_octave_option_version ()
   assertTrue "unexpected output on first line of $OCTAVE --version" $?
 }
 
+test_octave_option_eval ()
+{
+  run $octave_cmd --eval '1'
+  assertTrueExitStatus
+  assertEmptyStderr
+  assertNotEmptyFile 'expected normal Octave output on stdout' $stdout
+}
+
+test_octave_option_eval_with_script_file ()
+{
+  write_script_file '2'
+  run $octave_cmd --eval '1' $script
+  assertFalseExitStatus
+  assertEmptyStdout
+  grep -E -q -x '^(error|warning): .*eval.*file.*mutually exclusive.*' $stderr
+  assertTrue "unexpected error message on $OCTAVE --eval CODE FILE" $?
+}
+
+test_octave_option_eval_with_stdin ()
+{
+  echo 'false' > $stdin
+  run_with_stdin $octave_cmd --eval 'true'
+  assertTrueExitStatus
+  assertEmptyStderr
+  assertEquals 'ans = 1' "$(cat $stdout)"
+}
+
 test_octave_eval_with_semicolon ()
 {
   run $octave_cmd --eval 'true;'
@@ -116,9 +155,12 @@ test_octave_eval_without_semicolon ()
 oneTimeSetUp ()
 {
   output_dir="${SHUNIT_TMPDIR}/output"
+  stdin="${output_dir}/stdin"
   stdout="${output_dir}/stdout"
   stderr="${output_dir}/stderr"
   mkdir -p ${output_dir}
+  > "$stdin"
+  script="${SHUNIT_TMPDIR}/testscript.m"
 }
 
 . $SHUNIT
