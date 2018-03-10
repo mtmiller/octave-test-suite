@@ -1,0 +1,12 @@
+---
+services:
+  - docker
+
+before_install:
+  - export TAG='octave-test-suite:travis'
+  - docker build -t ${TAG} travis
+  - docker run -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v ${PWD}:/test:ro ${TAG} > /tmp/container
+
+script:
+  - export CONTAINER=$(cat /tmp/container)
+  - docker exec ${CONTAINER} /test/octave-shunit-test.sh
