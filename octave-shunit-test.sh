@@ -44,6 +44,16 @@ assertEmptyFile ()
   assertNull "$msg" "$contents"
 }
 
+assertEmptyStderr ()
+{
+  assertEmptyFile 'unexpected output on stderr' $stderr
+}
+
+assertEmptyStdout ()
+{
+  assertEmptyFile 'unexpected output on stdout' $stdout
+}
+
 assertNotEmptyFile ()
 {
   msg=
@@ -70,19 +80,19 @@ test_octave_exists ()
 {
   run $octave_cmd --help
   assertTrueExitStatus
-  assertEmptyFile 'unexpected output to stderr' $stderr
-  assertNotEmptyFile 'expected usage listing to stdout' $stdout
+  assertEmptyStderr
+  assertNotEmptyFile 'expected usage listing on stdout' $stdout
   run $octave_cmd --version
   assertTrueExitStatus
-  assertEmptyFile 'unexpected output to stderr' $stderr
-  assertNotEmptyFile 'expected usage listing to stdout' $stdout
+  assertEmptyStderr
+  assertNotEmptyFile 'expected version information on stdout' $stdout
 }
 
 test_octave_option_version ()
 {
   run $octave_cmd --version
   assertTrueExitStatus
-  assertEmptyFile 'unexpected output to stderr' $stderr
+  assertEmptyStderr
   head -n1 "$stdout" | grep -E -q -x 'GNU Octave, version [0-9.]+(\+|-rc[0-9])?'
   assertTrue "unexpected output on first line of $OCTAVE --version" $?
 }
