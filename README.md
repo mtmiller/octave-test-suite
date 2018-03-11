@@ -1,5 +1,8 @@
 # Octave Test Suite
 
+[![Build Status](https://travis-ci.org/mtmiller/octave-test-suite.svg?branch=master)](https://travis-ci.org/mtmiller/octave-test-suite)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
 This is a set of tests written for GNU Octave.
 
 Octave does have its own built-in unit test suite. This set of tests is
