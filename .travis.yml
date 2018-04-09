@@ -9,4 +9,6 @@ before_install:
   - export CONTAINER=$(cat /tmp/container)
 
 script:
+  - docker exec ${CONTAINER} octave --version
+  - docker exec ${CONTAINER} octave --eval "ver Octave"
   - docker exec ${CONTAINER} /test/octave-shunit-test.sh
