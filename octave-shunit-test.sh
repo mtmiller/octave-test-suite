@@ -140,15 +140,15 @@ test_octave_eval_with_semicolon ()
 {
   run $octave_cmd --eval 'true;'
   assertTrueExitStatus
-  assertEmptyFile 'unexpected output to stderr' $stderr
-  assertEmptyFile 'unexpected output to stdout' $stdout
+  assertEmptyStderr
+  assertEmptyStdout
 }
 
 test_octave_eval_without_semicolon ()
 {
   run $octave_cmd --eval 'true'
   assertTrueExitStatus
-  assertEmptyFile 'unexpected output to stderr' $stderr
+  assertEmptyStderr
   assertEquals 'ans = 1' "$(cat $stdout)"
 }
 
@@ -175,8 +175,8 @@ test_octave_exit_function_exit_status_1 ()
 {
   write_script_file 'exit (0);'
   run $octave_cmd $script
-  assertEmptyStdout
   assertEmptyStderr
+  assertEmptyStdout
   assertEquals 0 $status
 }
 
@@ -184,8 +184,8 @@ test_octave_exit_function_exit_status_2 ()
 {
   write_script_file 'exit (1);'
   run $octave_cmd $script
-  assertEmptyStdout
   assertEmptyStderr
+  assertEmptyStdout
   assertEquals 1 $status
 }
 
@@ -193,8 +193,8 @@ test_octave_exit_function_exit_status_3 ()
 {
   write_script_file 'exit (42);'
   run $octave_cmd $script
-  assertEmptyStdout
   assertEmptyStderr
+  assertEmptyStdout
   assertEquals 42 $status
 }
 
