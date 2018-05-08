@@ -152,6 +152,52 @@ test_octave_eval_without_semicolon ()
   assertEquals 'ans = 1' "$(cat $stdout)"
 }
 
+test_octave_trivial_script ()
+{
+  write_script_file '0'
+  run $octave_cmd $script
+  assertTrueExitStatus
+  assertEmptyStderr
+  assertEquals 'ans = 0' "$(cat $stdout)"
+}
+
+test_octave_error_function_exit_status ()
+{
+  write_script_file 'error ("this command has failed");'
+  run $octave_cmd $script
+  assertFalseExitStatus
+  assertEmptyStdout
+  head -n1 $stderr | grep -E -q -x 'error: this command has failed'
+  assertTrue "unexpected error message on $OCTAVE FILE calling the error function" $?
+}
+
+test_octave_exit_function_exit_status_1 ()
+{
+  write_script_file 'exit (0);'
+  run $octave_cmd $script
+  assertEmptyStdout
+  assertEmptyStderr
+  assertEquals 0 $status
+}
+
+test_octave_exit_function_exit_status_2 ()
+{
+  write_script_file 'exit (1);'
+  run $octave_cmd $script
+  assertEmptyStdout
+  assertEmptyStderr
+  assertEquals 1 $status
+}
+
+test_octave_exit_function_exit_status_3 ()
+{
+  write_script_file 'exit (42);'
+  run $octave_cmd $script
+  assertEmptyStdout
+  assertEmptyStderr
+  assertEquals 42 $status
+}
+
 oneTimeSetUp ()
 {
   output_dir="${SHUNIT_TMPDIR}/output"
