@@ -1,3 +1,4 @@
-# Authors and Contributors
+Contributors
+============
 
 * Mike Miller
