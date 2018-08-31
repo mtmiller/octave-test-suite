@@ -18,6 +18,12 @@ Requirements
 * GNU Octave, preferably version 4.4.1 or the development branch
 * shunit2
 
+Contributing
+------------
+
+If you would like to help make this project better, your contributions are
+very welcome! Please take a look at [CONTRIBUTING.md](CONTRIBUTING.md).
+
 License
 -------
 
