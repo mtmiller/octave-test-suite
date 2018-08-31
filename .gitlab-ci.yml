@@ -1,0 +1,10 @@
+image: mtmiller/octave-snapshot
+
+before_script:
+  - apt-get update -qq && apt-get install -y -qq shunit2
+  - octave --version
+  - octave --eval="ver Octave"
+
+test:
+  script:
+    - sh octave-shunit-test.sh
