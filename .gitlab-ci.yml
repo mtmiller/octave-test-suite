@@ -1,4 +1,4 @@
-image: mtmiller/octave-snapshot
+image: mtmiller/octave:devel
 
 before_script:
   - apt-get update -qq && apt-get install -y -qq shunit2
