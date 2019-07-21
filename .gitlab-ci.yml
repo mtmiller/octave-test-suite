@@ -1,7 +1,11 @@
 image: mtmiller/octave
 
+variables:
+  SHUNIT: ${CI_PROJECT_DIR}/shunit2
+
 before_script:
-  - apt-get update -qq && apt-get install -y -qq shunit2
+  - apt-get update -qq && apt-get install -y -qq curl
+  - curl -LS -o shunit2 https://github.com/kward/shunit2/raw/master/shunit2
   - octave --version
   - octave --eval="ver Octave"
 
