@@ -1,4 +1,4 @@
-image: mtmiller/octave
+image: registry.gitlab.com/mtmiller/docker-octave
 
 variables:
   SHUNIT: ${CI_PROJECT_DIR}/shunit2
@@ -18,5 +18,5 @@ test stable:
     - sh octave-shunit-test.sh
 
 test devel:
-  image: mtmiller/octave:devel
+  image: registry.gitlab.com/mtmiller/docker-octave:devel
   extends: test stable
